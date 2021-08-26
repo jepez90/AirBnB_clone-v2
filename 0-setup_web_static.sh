@@ -1,14 +1,19 @@
 #!/usr/bin/env bash
-# get ready the webservers for deployment
+# install and configure the web server for deploiment web static
 
 apt-get -y update
 apt-get -y install nginx
-ufw allow 'Nginx HTTP'
-mkdir -p /data/web_static/
+
 mkdir -p /data/web_static/releases/test/
 mkdir -p /data/web_static/shared/
-echo "Testing this s..." | sudo tee /data/web_static/releases/test/index.html
+
+echo "It is Working!!!" > /data/web_static/releases/test/index.html
 ln -sf /data/web_static/releases/test /data/web_static/current
 chown -R ubuntu:ubuntu /data
-sed -i '/listen 80 default_server/a location /hbtn_static/ { alias /data/web_static/current/;}' /etc/nginx/sites-available/default
+
+# configure nginx to serve static content from /hbtn_static/
+old_config="server_name localhost;"
+new_congig="${old_config}\n\n\tlocation \/hbtn_static\/ {\n\t\talias \/data\/web_static\/current\/;\n\t}\n"
+sed -i "s/$old_config/$new_congig/" /etc/nginx/sites-available/default
+
 service nginx restart

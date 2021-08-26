@@ -1,6 +1,8 @@
 #!/usr/bin/python3
 """ Test link Many-To-Many Place <> Amenity
 """
+import os, sys
+sys.path.append(os.path.abspath('..'))
 from models.place import Place
 from models.user import User
 from models.city import City
