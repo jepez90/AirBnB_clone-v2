@@ -53,7 +53,7 @@ def do_deploy(archive_path):
 
         # removes and re creates the symbolic link
         run("rm /data/web_static/current")
-        run("ln -s " + remote_path + " /data/web_static/current")
+        run("ln -sn " + remote_path + " /data/web_static/current")
         return True
     except Exception as err:
         return False

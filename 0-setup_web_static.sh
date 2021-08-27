@@ -13,7 +13,7 @@ chown -R ubuntu:ubuntu /data
 
 # configure nginx to serve static content from /hbtn_static/
 old_config="listen 80 default_server;"
-new_congig="${old_config}\n\n\tlocation \/hbtn_static {\n\t\talias \/data\/web_static\/current\/;\n\t}\n"
+new_congig="${old_config}\n\n\tlocation \/hbnb_static {\n\t\talias \/data\/web_static\/current\/;\n\t}\n"
 sed -i "s/$old_config/$new_congig/" /etc/nginx/sites-available/default
 
 service nginx restart
