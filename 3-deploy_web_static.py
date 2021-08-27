@@ -49,7 +49,16 @@ def do_deploy(archive_path):
 
         # removes and re creates the symbolic link
         run("rm /data/web_static/current")
-        run("ln -sfn " + remote_path + filename + "/ /data/web_static/current")
+        run("ln -sf " + remote_path + filename + " /data/web_static/current")
         return True
     except Exception as err:
         return False
+
+
+def deploy():
+    packed_file = do_pack()
+    print(packed_file)
+    if packed_file is None:
+        return False
+
+    return do_deploy(packed_file)
