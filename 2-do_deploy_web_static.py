@@ -26,6 +26,7 @@ def do_pack():
 
 @hosts('ubuntu@34.138.86.55', 'ubuntu@34.75.178.179')
 def do_deploy(archive_path):
+    """ deploy an cipped file in the server """
     remote_path = "/data/web_static/releases/"
     temp_path = '/tmp/'
     full_filename = archive_path.split('/')[-1]
@@ -42,7 +43,7 @@ def do_deploy(archive_path):
         run('mv ' + remote_path + filename +
             '/web_static/* ' + remote_path + filename + '/')
         run('rm -rf ' + remote_path + filename + '/web_static')
-        
+
         # delete the file from /tmp/
         run("rm " + temp_path + full_filename)
 
@@ -52,6 +53,3 @@ def do_deploy(archive_path):
         return True
     except Exception as err:
         return False
-
-
-
