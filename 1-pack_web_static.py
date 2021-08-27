@@ -6,10 +6,16 @@ from fabric.operations import local
 
 
 def do_pack():
-    local("mkdir -p versions")
-    r = local("tar -cvzf versions/web_static_{}.tgz web_static"
-              .format(datetime.strftime(datetime.now(), "%Y%m%d%H%M%S")),
-              capture=True)
+    """ generates a .tgz fiile with the content of the wen_static folder"""
+    folder_name = "versions"
+    time = datetime.strftime(datetime.now(), "%Y%m%d%H%M%S")
+
+    # creates if not exist, the folder verdions
+    local("mkdir -p {}".format(folder_name))
+
+    # creates the packed file
+    path = "{}/web_static_{}.tgz".format(folder_name, time)
+    r = local("tar -czf {} web_static".format(path), capture=True)
     if r.failed:
         return None
     return r
