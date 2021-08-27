@@ -4,9 +4,12 @@
 from datetime import datetime
 from re import T
 from fabric.api import local, put, run, hosts, env
+from os import path
 
 
-# env.hosts=['ubuntu@34.138.86.55', 'ubuntu@34.75.178.179']
+env.hosts = ['34.138.86.55', '34.75.178.179']
+env.packed_file = None
+
 
 def do_pack():
     """ generates a .tgz fiile with the content of the wen_static folder"""
@@ -21,44 +24,47 @@ def do_pack():
     r = local("tar -czf {} web_static".format(path), capture=True)
     if r.failed:
         return None
-    return r
+    return path
 
 
-@hosts('ubuntu@34.138.86.55', 'ubuntu@34.75.178.179')
 def do_deploy(archive_path):
     """ deploy an cipped file in the server """
-    remote_path = "/data/web_static/releases/"
-    temp_path = '/tmp/'
+
     full_filename = archive_path.split('/')[-1]
     filename = full_filename.rsplit('.', 1)[0]
+    remote_path = "/data/web_static/releases/{}/".format(filename)
+    temp_path = '/tmp/'
+
+    if not path.exists(archive_path):
+        return False
+
     try:
         # send the file to the server
-        result = put(archive_path, remote_path=temp_path)
-        if len(result) == 0:
-            return False
+        put(archive_path, remote_path=temp_path)
+
         # subtract the files in the specific folder
-        run('mkdir -p ' + remote_path + filename + '/')
-        run('tar -xzf ' + temp_path + full_filename +
-            ' -C ' + remote_path + filename + '/')
-        run('mv ' + remote_path + filename +
-            '/web_static/* ' + remote_path + filename + '/')
-        run('rm -rf ' + remote_path + filename + '/web_static')
+        run('mkdir -p ' + remote_path)
+        run('tar -xzf ' + temp_path + full_filename + ' -C ' + remote_path)
+        run('mv ' + remote_path + 'web_static/* ' + remote_path)
+        run('rm -rf ' + remote_path + 'web_static')
 
         # delete the file from /tmp/
         run("rm " + temp_path + full_filename)
 
         # removes and re creates the symbolic link
         run("rm /data/web_static/current")
-        run("ln -sf " + remote_path + filename + " /data/web_static/current")
+        run("ln -s " + remote_path + " /data/web_static/current")
         return True
     except Exception as err:
         return False
 
 
 def deploy():
-    packed_file = do_pack()
-    print(packed_file)
-    if packed_file is None:
+    """ Perform a complete deploy """
+    if env.packed_file is None:
+        env.packed_file = do_pack()
+    print(env.packed_file)
+    if env.packed_file is None:
         return False
 
-    return do_deploy(packed_file)
+    return do_deploy(env.packed_file)
