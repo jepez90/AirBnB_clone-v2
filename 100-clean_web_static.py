@@ -78,13 +78,21 @@ def do_clean(number=0):
     # list the local files in folder versions
     ls = local("ls -1t versions/", capture=True)
     ls = ls.splitlines()
+    if number < len(ls):
 
-    # traverse the list
-    for index in range(number, len(ls)):
-        full_filename = ls[index]
-        filename = full_filename.rsplit(".", 1)[0]
-        filename = "/data/web_static/releases/" + filename
+        # traverse the list
+        for index in range(number, len(ls)):
+            full_filename = ls[index]
 
-        # remove each file in local and each folder in remote
-        local("rm -f versions/" + full_filename)
-        run("rm -rf " + filename)
+            # remove each file in local and each folder in remote
+            local("rm -f versions/" + full_filename)
+
+    ls = run("ls -1t /data/web_static/releases/")
+    ls = ls.splitlines()
+    if number < len(ls):
+
+        for index in range(number, len(ls)):
+            foldername = ls[index]
+            if foldername.startswith('web_static_'):
+                foldername = "/data/web_static/releases/" + foldername
+                run("rm -rf " + foldername)
