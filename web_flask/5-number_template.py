@@ -46,7 +46,7 @@ def number(n=''):
 
 
 @app.route('/number_template/<int:n>', strict_slashes=False)
-def numberTemplate(n):
+def usingTemplate1(n):
     """ handle the route /number_template/<int:n>: and render a template """
     return render_template('5-number.html', number=n)
 

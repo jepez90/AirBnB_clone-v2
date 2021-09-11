@@ -46,13 +46,13 @@ def number(n=''):
 
 
 @app.route('/number_template/<int:n>', strict_slashes=False)
-def numberTemplate(n=''):
+def numberTemplate(n):
     """ handle the route /number_template/<int:n>: and render a template """
     return render_template('5-number.html', n=n)
 
 
 @app.route('/number_odd_or_even/<int:n>', strict_slashes=False)
-def numberOddOrEven(n=''):
+def numberOddOrEven(n):
     """ handle the route /number_odd_or_even/<int:n>: and render a template """
 
     if n % 2 == 0:
