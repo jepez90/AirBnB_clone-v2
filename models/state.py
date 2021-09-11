@@ -7,15 +7,28 @@ from sqlalchemy.orm import relationship
 import sqlalchemy
 from models.city import City
 import models
+from os import getenv
 
 
 class State(BaseModel, Base):
     """ State class """
     __tablename__ = 'states'
-    name = Column(String(128), nullable=False)
-    cities = relationship("City", back_populates="state")
 
-    # @property
-    # def cities(self):
-    #    """getter of cities instances"""
-    #    return self.cities
+    if getenv("HBNB_TYPE_STORAGE") == 'db':
+        print('dbstorage used')
+        cities = relationship("City", back_populates="state")
+        name = Column(String(128), nullable=False)
+    else:
+        @property
+        def cities(self):
+            """getter of cities instances"""
+            from models import storage
+            allCities = storage.all(City.__class__.__name__)
+
+            cities_of_state = []
+
+            for city in allCities:
+                if city.state_id == self.id:
+                    cities_of_state.add(city)
+            return cities_of_state
+        name = ''
