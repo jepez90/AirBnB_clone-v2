@@ -2,3 +2,4 @@
 *.pub
 holberton
 *.tgz
+web_flask/venv/*
