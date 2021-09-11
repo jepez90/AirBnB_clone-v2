@@ -30,6 +30,14 @@ def CIsFun(text=''):
     return 'C {}'.format(text)
 
 
+@app.route('/python', strict_slashes=False)
+@app.route('/python/<text>', strict_slashes=False)
+def pythonIsCool(text='is cool'):
+    """ handle the route /python/<text> and show a message """
+    text = text.replace('_', ' ')
+    return 'Python {}'.format(text)
+
+
 @app.route('/number/<int:n>', strict_slashes=False)
 def number(n=''):
     """ handle the route /number/<int:n>: and show a message """
@@ -37,4 +45,4 @@ def number(n=''):
 
 
 if __name__ == '__main__':
-    app.run(debug=True, port=5000)
+    app.run(host='0.0.0.0', port=5000)
