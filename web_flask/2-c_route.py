@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 """ Script that starts a Flask web application  with a route:
     /:          show the message 'Hello HBNB!'
     /hbnb:      show the message 'HBNB'
