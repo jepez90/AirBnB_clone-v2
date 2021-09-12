@@ -23,12 +23,12 @@ class State(BaseModel, Base):
         def cities(self):
             """getter of cities instances"""
             from models import storage
-            allCities = storage.all(City.__class__.__name__)
+            allCities = storage.all(City)
 
             cities_of_state = []
 
-            for city in allCities:
+            for city_id, city in allCities.items():
                 if city.state_id == self.id:
-                    cities_of_state.add(city)
+                    cities_of_state.append(city)
             return cities_of_state
         name = ''

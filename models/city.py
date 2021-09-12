@@ -7,6 +7,7 @@ from sqlalchemy import Column, String, ForeignKey
 from sqlalchemy.orm import relationship
 from os import getenv
 
+
 class City(BaseModel, Base):
     """ The city class, contains state ID and name """
 
@@ -22,3 +23,8 @@ class City(BaseModel, Base):
     else:
         state_id = ""
         name = ""
+
+        @property
+        def places(self):
+            return []
+        state = None
