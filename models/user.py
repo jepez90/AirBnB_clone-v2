@@ -28,7 +28,7 @@ class User(BaseModel, Base):
             places_of_user = []
 
             for place_id, place in allPlaces.items():
-                if place.user_id== self.id:
+                if place.user_id == self.id:
                     places_of_user.append(place)
             return places_of_user
 

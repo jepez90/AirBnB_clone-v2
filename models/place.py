@@ -1,9 +1,7 @@
 #!/usr/bin/python3
 """ Place Module for HBNB project """
-from models.amenity import Amenity
-from models.review import Review
+
 from os import getenv
-from re import S
 from sqlalchemy.sql.expression import column
 from sqlalchemy.sql.schema import ColumnDefault, Table
 from models.base_model import BaseModel, Base
@@ -40,6 +38,7 @@ class Place(BaseModel, Base):
         amenities = relationship("Amenity", secondary=place_amenity,
                                  back_populates="place_amenities")
     else:
+
         user = ''
         cities = []
 
@@ -47,6 +46,7 @@ class Place(BaseModel, Base):
         def reviews(self):
             """getter of reviews instances """
             from models import storage
+            from models.review import Review
             allReviews = storage.all(Review)
 
             reviews_of_place = []
@@ -60,6 +60,7 @@ class Place(BaseModel, Base):
         def amenities(self):
             """getter of amenity instances """
             from models import storage
+            from models.amenity import Amenity
             allAmenities = storage.all(Amenity)
 
             amenities_of_place = []
@@ -72,5 +73,6 @@ class Place(BaseModel, Base):
         @amenities.setter
         def amenities(self, value):
             """setter of amenity instances """
+            from models.amenity import Amenity
             if isinstance(value, Amenity):
                 self.amenity_ids.append(value.id)
