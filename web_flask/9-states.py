@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 """ Script that starts a Flask web application  with a route:
-    /states:    render a template with all states in storage
+    /states:        render a template with all states in storage
+    /states/<id>:   render a template with all cities of the state id
 """
 
 from models import storage

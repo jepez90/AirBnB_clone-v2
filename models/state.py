@@ -15,7 +15,6 @@ class State(BaseModel, Base):
     __tablename__ = 'states'
 
     if getenv("HBNB_TYPE_STORAGE") == 'db':
-        print('dbstorage used')
         cities = relationship("City", back_populates="state")
         name = Column(String(128), nullable=False)
     else:
