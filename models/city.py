@@ -26,5 +26,15 @@ class City(BaseModel, Base):
 
         @property
         def places(self):
-            return []
+            """getter of places instances """
+            from models import storage
+            from models.place import Place
+            allPlacces = storage.all(Place)
+
+            places_of_city = []
+
+            for place_id, place in allPlacces.items():
+                if place.city_id == self.id:
+                    places_of_city.append(place)
+            return places_of_city
         state = None
