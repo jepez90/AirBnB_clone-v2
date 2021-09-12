@@ -75,4 +75,3 @@ class DBStorage:
 
     def close(self):
         self.__session.invalidate()
-
